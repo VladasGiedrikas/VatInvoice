@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using VatInvoice.Data;
+﻿using VatInvoice.Data;
 using VatInvoice.Interface;
 using VatInvoice.Model;
 
 namespace VatInvoice.Service
 {
-   public class MakeInvoiceService : IMakeInvoiceService
+    public class MakeInvoiceService : IMakeInvoiceService
     {
-
         // count what sum will be paid according to vat size and sum customer paid
         public decimal GetVatSize(Customer customer, Vendor vendor)
         {

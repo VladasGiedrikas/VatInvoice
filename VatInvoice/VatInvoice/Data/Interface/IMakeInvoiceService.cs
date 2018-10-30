@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VatInvoice.Model;
+﻿using VatInvoice.Model;
 
 namespace VatInvoice.Interface
 {
