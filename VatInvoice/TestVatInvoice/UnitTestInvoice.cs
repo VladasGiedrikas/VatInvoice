@@ -3,6 +3,7 @@ using System;
 using VatInvoice;
 using VatInvoice.Interface;
 using VatInvoice.Model;
+using VatInvoice.Service;
 using Xunit;
 
 namespace TestVatInvoice
@@ -15,29 +16,57 @@ namespace TestVatInvoice
         {
             _dataService = Substitute.For<IMakeInvoiceService>();
         }
-         Customer customer = new Customer()
-         { Id = 11, FirstName = "Vladas",
-            LastName = "Giedrikas",
-            Country = "Lithuania",
-            EuResident = true ,
-            VatPayer = false
-         };
-
-        Vendor vendor = new Vendor()
-        { Id = 1, CompanyName = "Travelers",
-          VatPayer = true, Country = "Lithuania"
-        };
+   
 
         [Fact]
-        public void When_Customer_And_Vendor_Are_From_The_Same_Country()
+        public void CountTaxSum_WhenCustomerAndVendorAreFromTheSameCountry()
         {
-           
-            var amount = 1000;
+            Customer customer = new Customer()
+            {
+                FirstName = "Vladas",
+                Country = "Lithuania",
+                EuResident = true,
+                VatPayer = false
+            };
 
-            _dataService.CountTaxSum(customer, vendor, amount).Returns(210);
-            var result = _dataService.CountTaxSum(customer, vendor, amount);
+            Vendor vendor = new Vendor()
+            {
+                CompanyName = "Travelers",
+                VatPayer = true,
+                Country = "Lithuania"
+            };
+        
 
-            Assert.Equal(result, _dataService.CountTaxSum(customer, vendor, amount));
+            _dataService.GetVatSize(customer, vendor).Returns(21);
+            var result = _dataService.GetVatSize(customer, vendor);
+
+            Assert.Equal(result, _dataService.GetVatSize(customer, vendor));
+        }
+        [Fact]
+        public void Class_CountTaxSum_WhenCustomerAndVendorAreFromTheSameCountry()
+        {
+            Customer customer = new Customer()
+            {
+                FirstName = "Vladas",
+                Country = "Lithuania",
+                EuResident = true,
+                VatPayer = false
+            };
+
+            Vendor vendor = new Vendor()
+            {
+                CompanyName = "Travelers",
+                VatPayer = true,
+                Country = "Lithuania"
+            };
+
+            var _dataService = new MakeInvoiceService();
+
+
+
+            var result = _dataService.GetVatSize(customer, vendor);
+
+            Assert.Equal(21, result);
         }
     }
 }

@@ -7,10 +7,6 @@ namespace VatInvoice.Interface
 {
     public interface IMakeInvoiceService
     {
-        //Customer GetCustomer(int id);
-       // Vendor GetVendor(int id);
-       // decimal GetVatSize(int VendorId, int CustomerId);
-       // decimal GetCountryVat(string country);
-        decimal CountTaxSum(Customer customer, Vendor vendor, decimal SumPaidForItem);
+        decimal GetVatSize(Customer customer, Vendor vendor);
     }
 }
