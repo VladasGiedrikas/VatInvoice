@@ -1,6 +1,8 @@
 using NSubstitute;
 using System;
+using VatInvoice;
 using VatInvoice.Interface;
+using VatInvoice.Model;
 using Xunit;
 
 namespace TestVatInvoice
@@ -13,44 +15,29 @@ namespace TestVatInvoice
         {
             _dataService = Substitute.For<IMakeInvoiceService>();
         }
+         Customer customer = new Customer()
+         { Id = 11, FirstName = "Vladas",
+            LastName = "Giedrikas",
+            Country = "Lithuania",
+            EuResident = true ,
+            VatPayer = false
+         };
 
+        Vendor vendor = new Vendor()
+        { Id = 1, CompanyName = "Travelers",
+          VatPayer = true, Country = "Lithuania"
+        };
 
         [Fact]
         public void When_Customer_And_Vendor_Are_From_The_Same_Country()
         {
-            var customerId = 11;
-            var vendorId = 1;
+           
             var amount = 1000;
 
-            _dataService.CountTaxSum(vendorId, customerId, amount).Returns(210);
-            var result = _dataService.CountTaxSum(vendorId, customerId, amount);
+            _dataService.CountTaxSum(customer, vendor, amount).Returns(210);
+            var result = _dataService.CountTaxSum(customer, vendor, amount);
 
-            Assert.Equal(result, _dataService.CountTaxSum(vendorId, customerId, amount));
+            Assert.Equal(result, _dataService.CountTaxSum(customer, vendor, amount));
         }
-        [Fact]
-        public void When_Customer_And_Vendor_Are_From_The_Different_Country()
-        {
-            var customerId = 13;
-            var vendorId = 1;
-            var amount = 1000;
-
-            _dataService.CountTaxSum(vendorId, customerId, amount).Returns(250);
-            var result = _dataService.CountTaxSum(vendorId, customerId, amount);
-
-            Assert.Equal(result, _dataService.CountTaxSum(vendorId, customerId, amount));
-        }
-        [Fact]
-        public void When_Customer_Not_From_Eu_Country()
-        {
-            var customerId = 12;
-            var vendorId = 1;
-            var amount = 1000;
-
-            _dataService.CountTaxSum(vendorId, customerId, amount).Returns(0);
-            var result = _dataService.CountTaxSum(vendorId, customerId, amount);
-
-            Assert.Equal(result, _dataService.CountTaxSum(vendorId, customerId, amount));
-        }
-
     }
 }
